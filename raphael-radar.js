@@ -1,6 +1,6 @@
 (function($) {
   // Draws a Polygon.
-  Raphael.fn.polygon = function (points)
+  Raphael.fn.polygon = function(points)
   {
      // Initial parameter makes an effect... mysterious...
      var path_string = "M 100 100";
@@ -17,23 +17,26 @@
      return poly;
   };
 
+  // Gets a position on a radar line.
   function lined_on( origin, base, bias)
   {
     return origin + (base - origin) * bias;
   };
 
-  function path_string( center, points, score)
+  // Gets SVG path string for a group of scores.
+  function path_string( center, points, scores)
   {
      vertex = [];
      for( var i = 0; i < points.length; i++){
        var s = "";
-       var x = lined_on( center.x, points[i].x, score[i]);
-       var y = lined_on( center.y, points[i].y, score[i]);
+       var x = lined_on( center.x, points[i].x, scores[i]);
+       var y = lined_on( center.y, points[i].y, scores[i]);
        vertex.push( "" + x + " " + y);
      }
      return "M " + vertex.join("L ") + "L " + vertex[0];
   };
 
+  // Draws a radarchart.
   Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
   {
       // Saves a point of center
