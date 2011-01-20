@@ -1,5 +1,6 @@
 (function($) {
-  Raphael.fn.polygon = function (params, points)
+  // Draws a Polygon.
+  Raphael.fn.polygon = function (points)
   {
       // Initial parameter makes an effect... mysterious...
       var path_string = "M 100 100";
@@ -12,13 +13,6 @@
         path_string += s;
       }
       var poly = this.path(path_string);
-      poly.attr(params);
-
-      /* Why this doesnt work?
-      for( var pos in points){
-        console.log(pos);
-      }
-      */
 
       return poly;
   };
@@ -87,7 +81,7 @@
       st.push(value);
 
       // Draws a frame of the chart and sets styles it
-      var poly = this.polygon(params, points);
+      var poly = this.polygon(points);
       poly.attr("stroke", "#555");
       poly.attr("stroke-width", "3");
       st.push(poly);
