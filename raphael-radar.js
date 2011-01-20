@@ -5,11 +5,11 @@
       // Initial parameter makes an effect... mysterious...
       var path_string = "M 100 100";
       for( var i = 0; i < points.length; i++){
-        var x = points[i][0];
-        var y = points[i][1];
+        var x = points[i].x;
+        var y = points[i].y;
         var s;
         s = (i == 0) ? "M " + x + " " + y + " " : "L " + x + " " + y + " ";
-        if( i == points.length - 1) s += "L " + points[0][0] + " " + points[0][1] + " ";
+        if( i == points.length - 1) s += "L " + points[0].x + " " + points[0].y + " ";
         path_string += s;
       }
       var poly = this.path(path_string);
@@ -22,13 +22,13 @@
     return origin + (base - origin) * bias;
   };
 
-  function path_string( cx, cy, points, score)
+  function path_string( center, points, score)
   {
     vertex = [];
     for( var i = 0; i < points.length; i++){
       var s = "";
-      var x = lined_on( cx, points[i][0], score[i]);
-      var y = lined_on( cy, points[i][1], score[i]);
+      var x = lined_on( center.x, points[i].x, score[i]);
+      var y = lined_on( center.y, points[i].y, score[i]);
       vertex.push( "" + x + " " + y);
     }
     return "M " + vertex.join("L ") + "L " + vertex[0];
