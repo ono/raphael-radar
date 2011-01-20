@@ -2,19 +2,19 @@
   // Draws a Polygon.
   Raphael.fn.polygon = function (points)
   {
-      // Initial parameter makes an effect... mysterious...
-      var path_string = "M 100 100";
-      for( var i = 0; i < points.length; i++){
-        var x = points[i].x;
-        var y = points[i].y;
-        var s;
-        s = (i == 0) ? "M " + x + " " + y + " " : "L " + x + " " + y + " ";
-        if( i == points.length - 1) s += "L " + points[0].x + " " + points[0].y + " ";
-        path_string += s;
-      }
-      var poly = this.path(path_string);
+     // Initial parameter makes an effect... mysterious...
+     var path_string = "M 100 100";
+     for( var i = 0; i < points.length; i++){
+       var x = points[i].x;
+       var y = points[i].y;
+       var s;
+       s = (i == 0) ? "M " + x + " " + y + " " : "L " + x + " " + y + " ";
+       if( i == points.length - 1) s += "L " + points[0].x + " " + points[0].y + " ";
+       path_string += s;
+     }
+     var poly = this.path(path_string);
 
-      return poly;
+     return poly;
   };
 
   function lined_on( origin, base, bias)
@@ -24,14 +24,14 @@
 
   function path_string( center, points, score)
   {
-    vertex = [];
-    for( var i = 0; i < points.length; i++){
-      var s = "";
-      var x = lined_on( center.x, points[i].x, score[i]);
-      var y = lined_on( center.y, points[i].y, score[i]);
-      vertex.push( "" + x + " " + y);
-    }
-    return "M " + vertex.join("L ") + "L " + vertex[0];
+     vertex = [];
+     for( var i = 0; i < points.length; i++){
+       var s = "";
+       var x = lined_on( center.x, points[i].x, score[i]);
+       var y = lined_on( center.y, points[i].y, score[i]);
+       vertex.push( "" + x + " " + y);
+     }
+     return "M " + vertex.join("L ") + "L " + vertex[0];
   };
 
   Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
