@@ -34,12 +34,6 @@
     return "M " + vertex.join("L ") + "L " + vertex[0];
   };
 
-  function break_per( n, s)
-  {
-    if( s.length <= n) return s;
-    return s.slice(0,n) + "\n" + break_per( n, s.slice(n));
-  };
-
   Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
   {
       // Saves a point of center
