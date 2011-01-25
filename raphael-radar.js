@@ -37,13 +37,24 @@
   };
 
   // Draws a radarchart.
-  Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
+  //
+  // cx, cy: coodinates of center
+  // radius: radius of the radar chart. you may need more height and width for labels.
+  // labels: labels of axises. e.g. ["Speed", "Technic", "Height", "Stamina", "Strength"]
+  // max_score: maximum score.
+  // score_groups: groups has 1+ group(s) of scores and name. please see bellow for the detail.
+  //  e.g.
+  //    score_groups = [
+  //      {title: "Messi 2008", [ 5, 5, 2, 2, 3]},
+  //      {title: "Messi 2010", [ 5, 5, 2, 4, 4]}
+  //    ]
+  //
+  // old interface.
+  // Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
+  Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, groups)
   {
-      // Saves a point of center
-      var cx = x;
-      var cy = y;
+      var x,y,x1,y1,x2,y2;
 
-      // Genarates points of the chart frame
       var angle = 360;
       var edgeLength = 2 * radius * Math.sin(Math.PI / sides);
       x += edgeLength / 2;
