@@ -45,96 +45,112 @@
   // score_groups: groups has 1+ group(s) of scores and name. please see bellow for the detail.
   //  e.g.
   //    score_groups = [
-  //      {title: "Messi 2008", [ 5, 5, 2, 2, 3]},
-  //      {title: "Messi 2010", [ 5, 5, 2, 4, 4]}
+  //      {title: "Messi 2008", scores: [ 5, 5, 2, 2, 3]},
+  //      {title: "Messi 2010", scores: [ 5, 5, 2, 4, 4]}
   //    ]
   //
   // old interface.
   // Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
-  Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, groups)
+  Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, score_groups)
   {
-      var x,y,x1,y1,x2,y2;
+    var center = {x:cx,y:cy};
+    var x,y,x1,y1,x2,y2;
+    var chart = {};
 
-      var angle = 360;
-      var edgeLength = 2 * radius * Math.sin(Math.PI / sides);
-      x += edgeLength / 2;
-      y += radius * Math.cos(Math.PI / sides);
-      var points = [[x,y]];
-      for(side = 1; side < sides; side++) {
-          angle -= 360 / sides;
-          rads = angle * (Math.PI / 180);
-          x = x + edgeLength * Math.cos(rads);
-          y = y + edgeLength * Math.sin(rads);
-          points.push([x,y]);
+    // Genarates points of the chart frame
+    var angle = -90;
+    var points = [], rads = [];
+    for (var i=0; i<sides; i++) {
+      var rad = (angle / 360.0) * (2 * Math.PI);
+      x = cx + radius * Math.cos(rad);
+      y = cy + radius * Math.sin(rad);
+      points.push({x:x,y:y});
+      rads.push(rad);
+      angle += 360.0 / sides;
+    }
+
+    // Regularises scores
+    for (var i=0; i<score_groups.length; i++) {
+      for (var j=0; j<score_groups[i].scores.length; j++) {
+        score_groups[i].scores[j] /= max_score;
       }
+    }
 
-      // Regularises scores
-      for( var i = 0; i < scores.length; i++){ scores[i] /= max}
+    var st = this.set(); // A set to compose elements of a frame
 
-      var st = this.set(); // A set to compose elements of a frame
+    // Draws measures of the chart
+    var measures=[], rulers=[];
+    for (var i = 0; i < points.length; i++) {
+      x = points[i].x, y = points[i].y;
+      measures.push( this.path("M " + cx + " " + cy + " L " + x + " " + y).attr("stroke", "#777") );
 
-      // Draws measures of the chart
-      for( var i = 0; i < points.length; i++){
-        var x = points[i][0];
-        var y = points[i][1];
-        st.push( this.path("M " + cx + " " + cy + " L " + x + " " + y).attr("stroke", "#777"));
+      // Draws ruler
+      rulers.push([]);
+      var r_len = 0.025;
+      for (var j = 1; j < 5; j++) {
+        x1 = lined_on( cx, points[i].x, j * 0.20 - r_len);
+        y1 = lined_on( cy, points[i].y, j * 0.20 - r_len);
+        x2 = lined_on( cx, points[i].x, j * 0.20 + r_len);
+        y2 = lined_on( cy, points[i].y, j * 0.20 + r_len);
+        var cl = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr({"stroke":"#777"});
+        cl.rotate(90);
+        rulers[i].push(cl);
       }
+    }
+    chart['measures'] = measures;
+    chart['rulers'] = rulers;
 
-      // Draws chart
-      var value = this.path( path_string( cx, cy, points, score));
-      value.attr("fill","#f90");
-      value.attr("fill-opacity","0.8");
-      value.attr("stroke-width", "2");
-      value.attr("stroke", "#a64");
-      st.push(value);
+    // Draws a frame of the chart and sets styles it
+    var frame = this.polygon(params, points).attr({"stroke":"#777"});
+    chart['frame'] = frame;
 
-      // Draws a frame of the chart and sets styles it
-      var poly = this.polygon(points);
-      poly.attr("stroke", "#555");
-      poly.attr("stroke-width", "3");
-      st.push(poly);
+    // Draws scores
+    chart['scores'] = []
+    for (var i=0; i<score_groups.length; i++) {
+      var scores = score_groups[i].scores;
+      var title = score_groups[i].title;
+      var vector = {};
+      var line = this.path( path_string( center, points, scores));
+      vector['line'] = line;
 
-      if(labels){
-        for( var i = 0; i < points.length; i++){
-          var x = lined_on( cx, points[i][0], 1.3);
-          var y = lined_on( cy, points[i][1], 1.3);
-          this.text( x, y, break_per( 3, labels[i])).attr({fill:"#555"})
-        }
+      // Draws points for chart
+      var points = [];
+      for (var i=0; i<score.length; i++) {
+        var x = lined_on( cx, points[i].x, scores[i]);
+        var y = lined_on( cy, points[i].y, scores[i]);
+
+        var point = this.circle(x,y,4.5).attr({'fill':'#333','stroke-width':'0'});
+        points.push(point);
+        // var inner = this.circle(x,y,4).attr({'fill':'#f05a23','stroke-width':'0'});
+        // points.push({inner:inner, outer:outer});
       }
+      vector['points'] = points;
 
-      if(ids){
-        for( var i = 0; i < points.length; i++){
-          var s = "";
-          for( var j = 1; j < 6; j++){
-            var x = lined_on( cx, points[i][0], j * 0.2);
-            var y = lined_on( cy, points[i][1], j * 0.2);
-            var cl = this.circle(x,y,3.5).attr({'fill':'#888','stroke-width':'0'}).mousedown(
-              function(){
-                score[this.axis] = this.score;
-                $('#' + this.related_id).val(this.score * max);
-                value.animate({path: path_string( cx, cy, points, score)},200);
-              }
-            ).mouseover(
-              function(){
-                this.animate({r: 5}, 150);;
-              }
-            ).mouseout(
-              function(){
-                this.animate({r: 3.5}, 150);;
-              }
-            ).mouseup(
-              function(){
-                this.animate({fill:"#888"}, 150);;
-              }
-            );
-            cl.axis = i;
-            cl.score = j / 5.0;
-            cl.related_id = ids ? ids[i] : null;
-            st.push(cl);
-          }
-        }
+      // title with line sample
+      if (title) {
+        var x1 = cx - 50, y1 = cy + radius * 1.05 + 20*i;
+        var x2 = cx, y2 = y1;
+        var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr(line_attr);
+        var point = this.circle(x1,y1,4.5).attr({'fill':'#333','stroke-width':'0'});
+        var text = this.text( x2+10, y2, graph_labels[0]).attr({fill:"#222",'text-anchor':'start'})
+        vector['title'] = {line:line,point:point,text:text};
       }
-      return st;
+      chart['scores'].push(vector);
+    }
+
+    if (labels) {
+      chart['labels'] = [];
+      for (var i = 0; i < points.length; i++) {
+        x = lined_on( cx, points[i][0], 1.3);
+        y = lined_on( cy, points[i][1], 1.1);
+        var label = labels[i];
+        if (label.length>10) label = label.replace(" ", "\n");
+        var text = this.text( x, y, label).attr({fill:"#222"});
+        chart['labels'].push(text);
+      }
+    }
+
+    return chart;
   };
 })(jQuery);
 
