@@ -1,4 +1,4 @@
-(function($) {
+(function() {
   // Draws a Polygon.
   Raphael.fn.polygon = function(points)
   {
@@ -152,20 +152,5 @@
 
     return chart;
   };
-})(jQuery);
+})();
 
-function radar( id, w, h, score, labels, ids, max){
-  var center_x = w / 2;
-  var center_y = h / 2;
-  var shorter  = (w < h) ? w : h;
-  var r = shorter / Math.PI;
-  var n = score.length;
-
-  var paper = Raphael( id, w, h);
-  var bg    = paper.rect(0, 0, w, h, 0);
-  var chart = paper.radarchart( center_x, center_y, r, n, 0, score, labels, ids, max);
-  chart.rotate(0, center_x, center_y);
-
-  bg.attr("gradient", "270-#fff-#fff:40-#ddd");
-  bg.attr("stroke-width", "0");
-};
