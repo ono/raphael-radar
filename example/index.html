@@ -1,30 +1,45 @@
-<html>
+<!DOCTYPE html> 
+<html lang="en"> 
   <head>
-    <script src="jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="raphael-1.3.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../raphael-radar-0.0.0.js" type="text/javascript" charset="utf-8"></script>
+    <meta charset="utf-8"> 
+    <title>Raphaël Radar Chart Plugin Sample</title> 
+    <link rel="stylesheet" href="example.css"> 
+    <script src="raphael-1.5.2.min.js"></script> 
+    <script src="jquery-1.5.min.js"></script> 
+    <script src="../raphael-radar.js"></script> 
   </head>
   <body>
-    <h1>Raphael Radar example</h1>
-    <p>Raphael Radarは、Raphael.jsを使って操作可能なレーダーチャートをSVGで描画するライブラリです。</p>
-    <p>Source code is available on <a href="http://github.com/tnzk/Raphael-Radar">Github</a>, Developed by <a href="http://twitter.com/tnzk">@tnzk</a></p>
-    <div id="chart" style="float:left;">
+    <div id="graph">
+
     </div>
-    <form>
-      <table>
-        <tr><td>ちから    </td><td><input id="p" name="test1" type="text" value="30" /></td></tr>
-        <tr><td>たいりょく</td><td><input id="s" name="test2" type="text" value="30" /></td></tr>
-        <tr><td>すばやさ  </td><td><input id="q" name="test3" type="text" value="30" /></td></tr>
-        <tr><td>かしこさ  </td><td><input id="c" name="test4" type="text" value="30" /></td></tr>
-        <tr><td>うんのよさ</td><td><input id="l" name="test5" type="text" value="30" /></td></tr>
-      </table>
-    </form>
-    <script type="text/javascript">
-      scores = [30,30,30,30,30];
-      labels = ["うんのよさ", "たいりょく", "ちから", "かしこさ", "すばやさ"];
-      ids    = ["l", "s", "p", "c", "q"];
-      //radar( "chart", 250, 250, scores, labels, null, 50);
-      radar( "chart", 250, 250, scores, labels, ids, 50);
-    </script>
   </body>
+
+  <script>
+    function radar( id, w, h, score, labels, ids, max){
+      var center_x = w / 2;
+      var center_y = h / 2;
+      var shorter  = (w < h) ? w : h;
+      var r = shorter / Math.PI;
+      var n = score.length;
+
+      var paper = Raphael( id, w, h);
+      var bg    = paper.rect(0, 0, w, h, 0);
+      var chart = paper.radarchart( center_x, center_y, r, n, 0, score, labels, ids, max);
+      chart.rotate(0, center_x, center_y);
+
+      bg.attr("gradient", "270-#fff-#fff:40-#ddd");
+      bg.attr("stroke-width", "0");
+    };
+
+    $(document).ready(function(){
+      // Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, score_groups)
+      var paper = Raphael( "graph", 500, 500);
+      var score_groups = [
+          {title: "Messi 2008", scores: [ 5, 5, 2, 2, 3]},
+          {title: "Messi 2010", scores: [ 3, 3, 4, 4, 4]}
+        ];
+      var chart = paper.radarchart( 200, 200, 160, ["Power", "Skill", "Speed", "Stamina", "Height"], 5, score_groups);
+
+    });
+  </script>
 </html>
