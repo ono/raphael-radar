@@ -56,6 +56,7 @@
     var center = {x:cx,y:cy};
     var x,y,x1,y1,x2,y2;
     var chart = {};
+    var sides = labels.length;
 
     // Genarates points of the chart frame
     var angle = -90;
@@ -101,7 +102,7 @@
     chart['rulers'] = rulers;
 
     // Draws a frame of the chart and sets styles it
-    var frame = this.polygon(params, points).attr({"stroke":"#777"});
+    var frame = this.polygon(points).attr({"stroke":"#777"});
     chart['frame'] = frame;
 
     // Draws scores
@@ -114,25 +115,23 @@
       vector['line'] = line;
 
       // Draws points for chart
-      var points = [];
-      for (var i=0; i<score.length; i++) {
-        var x = lined_on( cx, points[i].x, scores[i]);
-        var y = lined_on( cy, points[i].y, scores[i]);
+      var v_points = [];
+      for (var j=0; j<scores.length; j++) {
+        var x = lined_on( cx, points[j].x, scores[j]);
+        var y = lined_on( cy, points[j].y, scores[j]);
 
         var point = this.circle(x,y,4.5).attr({'fill':'#333','stroke-width':'0'});
-        points.push(point);
-        // var inner = this.circle(x,y,4).attr({'fill':'#f05a23','stroke-width':'0'});
-        // points.push({inner:inner, outer:outer});
+        v_points.push(point);
       }
-      vector['points'] = points;
+      vector['points'] = v_points;
 
       // title with line sample
       if (title) {
         var x1 = cx - 50, y1 = cy + radius * 1.05 + 20*i;
         var x2 = cx, y2 = y1;
-        var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr(line_attr);
+        var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2)
         var point = this.circle(x1,y1,4.5).attr({'fill':'#333','stroke-width':'0'});
-        var text = this.text( x2+10, y2, graph_labels[0]).attr({fill:"#222",'text-anchor':'start'})
+        var text = this.text( x2+10, y2, title).attr({fill:"#222",'text-anchor':'start'})
         vector['title'] = {line:line,point:point,text:text};
       }
       chart['scores'].push(vector);
@@ -141,11 +140,15 @@
     if (labels) {
       chart['labels'] = [];
       for (var i = 0; i < points.length; i++) {
-        x = lined_on( cx, points[i][0], 1.3);
-        y = lined_on( cy, points[i][1], 1.1);
+        x = lined_on( cx, points[i].x, 1.1);
+        y = lined_on( cy, points[i].y, 1.1);
+        var anchor = "center";
+        if (x>cx) anchor = "start";
+        if (x<cx) anchor = "end";
+
         var label = labels[i];
         if (label.length>10) label = label.replace(" ", "\n");
-        var text = this.text( x, y, label).attr({fill:"#222"});
+        var text = this.text( x, y, label).attr({fill:"#222", 'text-anchor':anchor});
         chart['labels'].push(text);
       }
     }
