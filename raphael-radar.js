@@ -61,6 +61,7 @@
     // Genarates points of the chart frame
     var angle = -90;
     var points = [], rads = [];
+    var bottom = 0;
     for (var i=0; i<sides; i++) {
       var rad = (angle / 360.0) * (2 * Math.PI);
       x = cx + radius * Math.cos(rad);
@@ -68,6 +69,8 @@
       points.push({x:x,y:y});
       rads.push(rad);
       angle += 360.0 / sides;
+
+      if (y>bottom) bottom = y;
     }
 
     // Regularises scores
@@ -127,7 +130,7 @@
 
       // title with line sample
       if (title) {
-        var x1 = cx - 50, y1 = cy + radius * 1.05 + 20*i;
+        var x1 = cx - 50, y1 = bottom + 30 + 20*i;
         var x2 = cx, y2 = y1;
         var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2)
         var point = this.circle(x1,y1,4.5).attr({'fill':'#333','stroke-width':'0'});
@@ -137,6 +140,7 @@
       chart['scores'].push(vector);
     }
 
+    // Draws labels 
     if (labels) {
       chart['labels'] = [];
       for (var i = 0; i < points.length; i++) {
