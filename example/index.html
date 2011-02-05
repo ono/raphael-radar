@@ -41,11 +41,12 @@
       var labels =  ["Offence", "Diffence", "Technic", "Strategy", "Physicality", "Mentality"];
       var max_point = 10;
 
-      var paper1 = Raphael( "simple_graph", 350, 350);
-      var simple = paper1.radarchart( 150, 120, 100, labels, 10, score_groups);
+      var paper1 = Raphael( "simple_graph", 460, 360);
+      var simple = paper1.radarchart( 221, 160, 120, labels, 10, score_groups);
 
-      var paper2 = Raphael( "rich_graph", 350, 350);
-      var rich = paper2.radarchart( 150, 120, 100, labels, 10, score_groups);
+      // hmm... maybe it is much better you can pass the attribute to radarchart function.
+      var paper2 = Raphael( "rich_graph", 460, 360);
+      var rich = paper2.radarchart( 221, 160, 120, labels, 10, score_groups);
       rich.scores[0].line.attr({'stroke-width':'2', 'stroke':'#39b549','stroke-dasharray':'- '});
       for (var i=0; i<rich.scores[0].points.length; i++) {
         rich.scores[0].points[i].attr({'fill':'#39b549','stroke-width':'0'});
