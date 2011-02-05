@@ -1,3 +1,5 @@
+// ono/raphael-rader.js v.0.1
+// https://github.com/ono/raphael-radar
 (function() {
   // Draws a Polygon.
   Raphael.fn.polygon = function(points)
