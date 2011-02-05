@@ -73,15 +73,6 @@
       if (y>bottom) bottom = y;
     }
 
-    // Regularises scores
-    for (var i=0; i<score_groups.length; i++) {
-      for (var j=0; j<score_groups[i].scores.length; j++) {
-        score_groups[i].scores[j] /= max_score;
-      }
-    }
-
-    var st = this.set(); // A set to compose elements of a frame
-
     // Draws measures of the chart
     var measures=[], rulers=[];
     for (var i = 0; i < points.length; i++) {
@@ -111,7 +102,10 @@
     // Draws scores
     chart['scores'] = []
     for (var i=0; i<score_groups.length; i++) {
-      var scores = score_groups[i].scores;
+      // Regularises scores
+      var scores = [];
+      for (var j=0; j<score_groups[i].scores.length; j++)
+        scores.push(score_groups[i].scores[j] / max_score);
       var title = score_groups[i].title;
       var vector = {};
       var line = this.path( path_string( center, points, scores));

@@ -17,23 +17,48 @@
       <div class="graph" id="simple_graph">
 
       </div>
-      <div class="code" id="graph">
+      <div class="code">
 
       </div>
     </div>
 
-    <h2></h2>
+    <h2>2. Rich</h2>
+    <div class="example">
+      <div class="graph" id="rich_graph">
+
+      </div>
+    </div>
+    <h2>3. Event</h2>
+    ...working
   </body>
 
   <script>
     $(document).ready(function(){
-      var paper = Raphael( "graph", 350, 350);
       var score_groups = [
-          {title: "FC Barcelona", scores: [ 10, 7, 10, 7, 6, 8]},
-          {title: "Real Madrid C.F.", scores: [ 8, 9, 7, 9, 7, 6]}
+          {title: "Real Madrid C.F.", scores: [ 8, 9, 7, 9, 7, 6]},
+          {title: "FC Barcelona", scores: [ 10, 7, 10, 7, 6, 8]}
           ];
       var labels =  ["Offence", "Diffence", "Technic", "Strategy", "Physicality", "Mentality"];
-      var chart = paper.radarchart( 150, 120, 100, labels, 10, score_groups);
+      var max_point = 10;
+
+      var paper1 = Raphael( "simple_graph", 350, 350);
+      var simple = paper1.radarchart( 150, 120, 100, labels, 10, score_groups);
+
+      var paper2 = Raphael( "rich_graph", 350, 350);
+      var rich = paper2.radarchart( 150, 120, 100, labels, 10, score_groups);
+      rich.scores[0].line.attr({'stroke-width':'2', 'stroke':'#39b549','stroke-dasharray':'- '});
+      for (var i=0; i<rich.scores[0].points.length; i++) {
+        rich.scores[0].points[i].attr({'fill':'#39b549','stroke-width':'0'});
+      }
+      rich.scores[0].title.line.attr({'stroke-width':'2', 'stroke':'#39b549','stroke-dasharray':'- '});
+      rich.scores[0].title.point.attr({'fill':'#39b549','stroke-width':'0'});
+
+      rich.scores[1].line.attr({'stroke-width':'4','stroke':'#0070bb','stroke-opacity':0.7,'fill':'#f7d2a8','fill-opacity':0.6})
+      for (var i=0; i<rich.scores[1].points.length; i++) {
+        rich.scores[1].points[i].attr({'fill':'#f05a23','stroke-width':'1.5','stroke':'#333'}).scale(1.2,1.2);
+      }
+      rich.scores[1].title.line.attr({'stroke-width':'4','stroke':'#0070bb','stroke-opacity':0.7});
+      rich.scores[1].title.point.attr({'fill':'#f05a23','stroke-width':'1.5','stroke':'#333'});
 
     });
   </script>
