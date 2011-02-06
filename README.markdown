@@ -1,8 +1,10 @@
 ono/raphael-radar
 =================
 
-ono/raphael-radar is refactored version of
+ono/raphael-radar is a refactored version of
 [Raphael-Radar](https://github.com/tnzk/Raphael-Radar)
+
+![Screen Shot](https://github.com/ono/raphael-radar/raw/master/example/images/screenshot.png)
 
 The objectives of refactoring are...
 
@@ -10,7 +12,7 @@ The objectives of refactoring are...
 * Easy customization. Especially for cosmetic changes.
 * Fix some bugs.
 * Support multiple groups of scores.
-* Remove unrequired code as a library and put the idea into example.
+* Remove unnessesary code from the library and put the idea into example.
 * Make the code simpler.
 
 Please note that there is no compatibility with the original version.
@@ -18,19 +20,17 @@ Please note that there is no compatibility with the original version.
 Example
 -------
 
-Althogh it is still alpha phase, you can see code working.
-
-[Example](http://o1123.com/raphael-radar/example/index.html)
+Seeing example is always the best way to understand how it works. Here is an
+[example code](http://o1123.com/raphael-radar/example/index.html).
 
 I am thinking of making the page nicer and adding an example to handling events
-on the chart. 
+on the chart near future.
 
 TODO
 ----
 
-* Set attributes for scores with arguments.
-* Better example page.
-* Bit more document.
+* Accept Raphael attributes for scores.
+* Better example page with code view.
 * Lincense information.
 
 Special Thanks to
