@@ -115,7 +115,7 @@
     // Draws scores
     chart['scores'] = []
     for (var i=0; i<score_groups.length; i++) {
-      var default_draw_options = { points: {'fill':'#333','stroke-width':'0'},
+      var default_draw_options = { points: {'fill':'#333','stroke-width':'0', 'size': 4.5},
                                     text: {'fill':"#222",'text-anchor':'start'},
                                     lines: {'stroke-width':'1' } };
                                     
@@ -148,7 +148,7 @@
         var x = lined_on( cx, points[j].x, scores[j]);
         var y = lined_on( cy, points[j].y, scores[j]);
 
-        var point = this.circle(x,y,4.5).attr(draw_options['points']);
+        var point = this.circle(x,y,draw_options['points']['size']).attr(draw_options['points']);
         v_points.push(point);
       }
       vector['points'] = v_points;
@@ -158,7 +158,7 @@
         var x1 = cx - 50, y1 = bottom + 30 + 20*i;
         var x2 = cx, y2 = y1;
         var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr(draw_options['lines']);
-        var point = this.circle(x1,y1,4.5).attr(draw_options['points']);
+        var point = this.circle(x1,y1,draw_options['points']['size']).attr(draw_options['points']);
         var text = this.text( x2+10, y2, title).attr(draw_options['text'])
         vector['title'] = {line:line,point:point,text:text};
       }

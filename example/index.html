@@ -32,12 +32,20 @@
       </div>
     </div>
     
-    <h2>3. Rich</h2>
+    <h2>3. Rich manipulated manually</h2>
     <div class="example">
       <div class="graph" id="rich_graph">
 
       </div>
     </div>
+    
+    <h4>4. Rich done by passing in options</h2>
+      <div class="example">
+        <div class="graph" id="rich_graph_options">
+
+        </div>
+      </div>
+      
     <h2>4. Event</h2>
     ...coming soon
   </body>
@@ -91,6 +99,38 @@
       }
       rich.scores[1].title.line.attr({'stroke-width':'4','stroke':'#0070bb','stroke-opacity':0.7});
       rich.scores[1].title.point.attr({'fill':'#f05a23','stroke-width':'1.5','stroke':'#333'});
+
+      // Rich graph using options
+      var descriptive_groups_with_draw_options = [
+          { title: "Real Madrid C.F.", 
+            offense: 8,
+            defense: 9,
+            technique: 7,
+            strategy: 9,
+            physicality: 7,
+            mentality: 6,
+            draw_options: {
+              lines: {'stroke-width':'2', 'stroke':'#39b549','stroke-dasharray':'- '},
+              points: {'fill':'#39b549','stroke-width':'0'}
+            }
+          },
+          { title: "FC Barcelona", 
+            offense: 10,
+            defense: 7,
+            technique: 10,
+            strategy: 7,
+            physicality: 6,
+            mentality: 8,
+            draw_options: {
+              lines: {'stroke-width':'4','stroke':'#0070bb','stroke-opacity':0.7,'fill':'#f7d2a8','fill-opacity':0.6},
+              points: {'fill':'#f05a23','stroke-width':'1.5','stroke':'#333', 'size': 6}
+            }
+          }
+      ];
+
+      var paper4 = Raphael( "rich_graph_options", 460, 360);
+      var rich_graph_options = paper4.radarchart( 221, 160, 120, labels, 10, descriptive_groups_with_draw_options);
+
 
     });
   </script>
