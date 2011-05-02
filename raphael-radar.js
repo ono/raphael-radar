@@ -42,7 +42,7 @@
   //
   // cx, cy: coodinates of center
   // radius: radius of the radar chart. you may need more height and width for labels.
-  // labels: labels of axises. e.g. ["Speed", "Technic", "Height", "Stamina", "Strength"]
+  // labels: labels of axes. e.g. ["Speed", "Technic", "Height", "Stamina", "Strength"]
   // max_score: maximum score.
   // score_groups: groups has 1+ group(s) of scores and name. please see bellow for the detail.
   //  e.g.
@@ -50,6 +50,17 @@
   //      {title: "Messi 2008", scores: [ 5, 5, 2, 2, 3]},
   //      {title: "Messi 2010", scores: [ 5, 5, 2, 4, 4]}
   //    ]
+  //
+  //  -or- the 'labels' attribute can be automatically queried on a score_group object
+  //    if the score_group object does not respond to 'scores'. It will look for both the
+  //    label value as well as lowercase/underscore versions e.g."Car Height" => "car_height"
+  //
+  //  e.g.
+  //    score_groups = [
+  //      { title: "Messi 2008", speed: 5, technic: 5, height: 2, stamina: 2, strength: 3 },
+  //      { title: "Messi 2010", speed: 5, technic: 5, height: 2, stamina: 4, strength: 4 }
+  //    ]
+  //    labels = ["Speed", "Technic", "Height", "Stamina", "Strength"]
   //
   // old interface.
   // Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
@@ -106,8 +117,20 @@
     for (var i=0; i<score_groups.length; i++) {
       // Regularises scores
       var scores = [];
-      for (var j=0; j<score_groups[i].scores.length; j++)
-        scores.push(score_groups[i].scores[j] / max_score);
+
+      // If a score_groups object doesn't respond to 'scores',
+      // loop through the labels attribute to try querying the
+      // keys on the object
+      if(score_groups[i].scores) {
+         for (var j=0; j<score_groups[i].scores.length; j++)
+           scores.push(score_groups[i].scores[j] / max_score);
+      } else {
+         for(var j=0; j<labels.length; j++) {
+            var value = score_groups[i][labels[j]] || score_groups[i][labels[j].toLowerCase().replace(" ","_")];
+            scores.push( value / max_score);
+         }
+      }
+              
       var title = score_groups[i].title;
       var vector = {};
       var line = this.path( path_string( center, points, scores));
