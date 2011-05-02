@@ -115,6 +115,12 @@
     // Draws scores
     chart['scores'] = []
     for (var i=0; i<score_groups.length; i++) {
+      var default_draw_options = { points: {'fill':'#333','stroke-width':'0'},
+                                    text: {'fill':"#222",'text-anchor':'start'},
+                                    lines: {'stroke-width':'1' } };
+                                    
+      draw_options = $.extend(true, default_draw_options, score_groups[i]['draw_options'] );
+      console.log(draw_options);
       // Regularises scores
       var scores = [];
 
@@ -133,16 +139,16 @@
               
       var title = score_groups[i].title;
       var vector = {};
-      var line = this.path( path_string( center, points, scores));
+      var line = this.path( path_string( center, points, scores) ).attr(draw_options['lines']);
       vector['line'] = line;
-
+      
       // Draws points for chart
       var v_points = [];
       for (var j=0; j<scores.length; j++) {
         var x = lined_on( cx, points[j].x, scores[j]);
         var y = lined_on( cy, points[j].y, scores[j]);
 
-        var point = this.circle(x,y,4.5).attr({'fill':'#333','stroke-width':'0'});
+        var point = this.circle(x,y,4.5).attr(draw_options['points']);
         v_points.push(point);
       }
       vector['points'] = v_points;
@@ -151,9 +157,9 @@
       if (title) {
         var x1 = cx - 50, y1 = bottom + 30 + 20*i;
         var x2 = cx, y2 = y1;
-        var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2)
-        var point = this.circle(x1,y1,4.5).attr({'fill':'#333','stroke-width':'0'});
-        var text = this.text( x2+10, y2, title).attr({fill:"#222",'text-anchor':'start'})
+        var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr(draw_options['lines']);
+        var point = this.circle(x1,y1,4.5).attr(draw_options['points']);
+        var text = this.text( x2+10, y2, title).attr(draw_options['text'])
         vector['title'] = {line:line,point:point,text:text};
       }
       chart['scores'].push(vector);
