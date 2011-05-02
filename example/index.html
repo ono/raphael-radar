@@ -22,13 +22,23 @@
       </div>
     </div>
 
-    <h2>2. Rich</h2>
+    <h2>2. Simple with auto-populated scores from labels</h2>
+    <div class="example">
+      <div class="graph" id="simple_graph_auto_populated">
+
+      </div>
+      <div class="code">
+
+      </div>
+    </div>
+    
+    <h2>3. Rich</h2>
     <div class="example">
       <div class="graph" id="rich_graph">
 
       </div>
     </div>
-    <h2>3. Event</h2>
+    <h2>4. Event</h2>
     ...coming soon
   </body>
 
@@ -38,15 +48,36 @@
           {title: "Real Madrid C.F.", scores: [ 8, 9, 7, 9, 7, 6]},
           {title: "FC Barcelona", scores: [ 10, 7, 10, 7, 6, 8]}
           ];
-      var labels =  ["Offence", "Diffence", "Technic", "Strategy", "Physicality", "Mentality"];
+      var labels =  ["Offense", "Defense", "Technique", "Strategy", "Physicality", "Mentality"];
       var max_point = 10;
 
       var paper1 = Raphael( "simple_graph", 460, 360);
       var simple = paper1.radarchart( 221, 160, 120, labels, 10, score_groups);
 
+      var descriptive_groups = [
+          {title: "Real Madrid C.F.", 
+            offense: 8,
+            defense: 9,
+            technique: 7,
+            strategy: 9,
+            physicality: 7,
+            mentality: 6},
+          {title: "FC Barcelona", 
+            offense: 10,
+            defense: 7,
+            technique: 10,
+            strategy: 7,
+            physicality: 6,
+            mentality: 8}
+          ];
+
+      var paper2 = Raphael( "simple_graph_auto_populated", 460, 360);
+      var simple_auto_populate = paper2.radarchart( 221, 160, 120, labels, 10, descriptive_groups);
+
+
       // hmm... maybe it is much better you can pass the attribute to radarchart function.
-      var paper2 = Raphael( "rich_graph", 460, 360);
-      var rich = paper2.radarchart( 221, 160, 120, labels, 10, score_groups);
+      var paper3 = Raphael( "rich_graph", 460, 360);
+      var rich = paper3.radarchart( 221, 160, 120, labels, 10, score_groups);
       rich.scores[0].line.attr({'stroke-width':'2', 'stroke':'#39b549','stroke-dasharray':'- '});
       for (var i=0; i<rich.scores[0].points.length; i++) {
         rich.scores[0].points[i].attr({'fill':'#39b549','stroke-width':'0'});
