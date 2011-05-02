@@ -64,12 +64,17 @@
   //
   // old interface.
   // Raphael.fn.radarchart = function (x, y, radius, sides, params, score, labels, ids, max)
-  Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, score_groups)
+  Raphael.fn.radarchart = function (cx, cy, radius, labels, max_score, score_groups, user_draw_options)
   {
     var center = {x:cx,y:cy};
     var x,y,x1,y1,x2,y2;
     var chart = {};
     var sides = labels.length;
+    
+    var global_draw_defaults = {
+      text: { fill: '#222', 'max-chars': 10, 'key': true },
+    }
+    var global_draw_options = $.extend( true, global_draw_defaults, user_draw_options);
 
     // Genarates points of the chart frame
     var angle = -90;
@@ -154,7 +159,7 @@
       vector['points'] = v_points;
 
       // title with line sample
-      if (title) {
+      if (title && global_draw_options['text']['key']) {
         var x1 = cx - 50, y1 = bottom + 30 + 20*i;
         var x2 = cx, y2 = y1;
         var line = this.path("M " + x1 + " " + y1 + " L " + x2 + " " + y2).attr(draw_options['lines']);
@@ -171,13 +176,13 @@
       for (var i = 0; i < points.length; i++) {
         x = lined_on( cx, points[i].x, 1.1);
         y = lined_on( cy, points[i].y, 1.1);
-        var anchor = "center";
+        var anchor = "middle";
         if (x>cx) anchor = "start";
         if (x<cx) anchor = "end";
 
         var label = labels[i];
-        if (label.length>10) label = label.replace(" ", "\n");
-        var text = this.text( x, y, label).attr({fill:"#222", 'text-anchor':anchor});
+        if (label.length > global_draw_options['text']['max-chars']) label = label.replace(" ", "\n");
+        var text = this.text( x, y, label).attr($.extend(true, global_draw_options['text'], {'text-anchor': anchor }));
         chart['labels'].push(text);
       }
     }
@@ -185,4 +190,3 @@
     return chart;
   };
 })();
-
