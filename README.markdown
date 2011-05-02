@@ -60,7 +60,7 @@ The following chart can be created using the code below it, and you no longer ne
     var paper = Raphael( "id_of_some_div", 460, 360);
     paper.radarchart( 221, 160, 120, labels, 10, objects);
     
-**Note: While the example below works great, I (jsoma) would recommend looking at the most recently updated on under /examples in this project**
+**Note: While the example below works great, I (jsoma) would recommend using the code above or looking at the most recently updated on under /examples in this project**
 
 Seeing example is always the best way to understand how it works. Here is an
 [example code](http://o1123.com/raphael-radar/example/index.html).
