@@ -120,7 +120,7 @@
                                     lines: {'stroke-width':'1' } };
                                     
       draw_options = $.extend(true, default_draw_options, score_groups[i]['draw_options'] );
-      console.log(draw_options);
+
       // Regularises scores
       var scores = [];
 
