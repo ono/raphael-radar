@@ -20,6 +20,8 @@ Please note that there is no compatibility with the original version.
 Example
 -------
 
+**While the example below works great, I would recommend looking at the most recently updated on under /examples in this project**
+
 Seeing example is always the best way to understand how it works. Here is an
 [example code](http://o1123.com/raphael-radar/example/index.html).
 
